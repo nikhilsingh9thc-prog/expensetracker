@@ -19,11 +19,14 @@ if _env_file.exists():
             os.environ.setdefault(_k.strip(), _v.strip())
 
 # ─── Core ──────────────────────────────────────────────────────────────────
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-local-dev-key-change-me')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-local-dev-key-change-me''test-secret-key')
 
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.environ.get(
+    'ALLOWED_HOSTS',
+    'expensetracker-clwy.onrender.com,localhost,127.0.0.1'
+).split(',')
 
 # ─── Apps ──────────────────────────────────────────────────────────────────
 INSTALLED_APPS = [
