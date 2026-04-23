@@ -1,0 +1,60 @@
+# ========================
+# Python / Django (Backend)
+# ========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.env
+*.log
+db.sqlite3
+*.sqlite3
+.venv/
+venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+.eggs/
+migrations/__pycache__/
+
+# Django secrets
+backend/.env
+backend/local_settings.py
+
+# Static & media files (generated)
+backend/staticfiles/
+backend/media/
+
+# ========================
+# Node / React (Frontend)
+# ========================
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# Vite cache
+frontend/.vite/
+
+# ========================
+# OS & Editor
+# ========================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# ========================
+# Misc
+# ========================
+*.bak
+*.tmp
