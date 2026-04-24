@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+// When served by Django on Render, same-domain '/api' works perfectly.
+// Set VITE_API_URL in .env only when frontend & backend are on separate domains.
 const API = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL || '/api',
   headers: {
     'Content-Type': 'application/json',
   },

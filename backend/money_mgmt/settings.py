@@ -62,10 +62,14 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'money_mgmt.urls'
 
+# Directory where the React build output (index.html) will live after build.sh runs
+FRONTEND_BUILD_DIR = os.path.join(BASE_DIR, 'frontend_build')
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # Allow Django to find React's index.html
+        'DIRS': [FRONTEND_BUILD_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -112,17 +116,27 @@ USE_TZ   = True
 # ─── Static files (WhiteNoise) ─────────────────────────────────────────────
 STATIC_URL  = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Include React build assets so collectstatic picks them up
+_frontend_assets = os.path.join(BASE_DIR, 'frontend_build', 'assets')
+STATICFILES_DIRS = [_frontend_assets] if os.path.isdir(_frontend_assets) else []
+
+# CompressedManifest works great on Render; falls back gracefully
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# WhiteNoise: serve the React index.html + assets under /static/ efficiently
+WHITENOISE_ROOT = FRONTEND_BUILD_DIR
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ─── CORS ──────────────────────────────────────────────────────────────────
 _cors_origins = os.environ.get(
     'CORS_ALLOWED_ORIGINS',
-    'http://localhost:5173,http://localhost:5174,http://127.0.0.1:5173,http://127.0.0.1:5174'
+    'http://localhost:5173,http://localhost:5174,http://127.0.0.1:5173,http://127.0.0.1:5174,https://expensetracker-clwy.onrender.com'
 )
-CORS_ALLOWED_ORIGINS  = [o.strip() for o in _cors_origins.split(',') if o.strip()]
+CORS_ALLOWED_ORIGINS   = [o.strip() for o in _cors_origins.split(',') if o.strip()]
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = False
 
 # ─── REST Framework ────────────────────────────────────────────────────────
 REST_FRAMEWORK = {
