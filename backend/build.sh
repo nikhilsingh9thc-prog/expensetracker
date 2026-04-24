@@ -1,38 +1,23 @@
 #!/usr/bin/env bash
-# Render runs this script every time you deploy.
-# Works whether Render's root dir is 'backend/' or the repo root.
-set -o errexit   # Exit immediately on any error
+# Render build script.
+# The React frontend build is already committed to git (backend/frontend_build/).
+# This script only needs to install Python deps, collect static, and migrate.
+set -o errexit
 
-# Resolve the directory where this script lives (always the backend folder)
+# Always run from the backend directory (where manage.py lives)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-FRONTEND_DIR="${REPO_ROOT}/frontend"
-BACKEND_DIR="${SCRIPT_DIR}"
+cd "${SCRIPT_DIR}"
 
-echo "==> Backend dir: ${BACKEND_DIR}"
-echo "==> Frontend dir: ${FRONTEND_DIR}"
+echo "==> Working directory: $(pwd)"
+echo "==> Python: $(python --version)"
 
-# ── 1. Install Python dependencies ──────────────────────────────────────────
-cd "${BACKEND_DIR}"
+# 1. Install Python dependencies
 pip install -r requirements.txt
 
-# ── 2. Build the React frontend ──────────────────────────────────────────────
-echo "==> Building React frontend..."
-cd "${FRONTEND_DIR}"
-npm ci                   # clean install (uses package-lock.json)
-npm run build            # outputs to frontend/dist/
-
-# ── 3. Copy React build into Django's template / static area ─────────────────
-echo "==> Copying frontend build into Django project..."
-cd "${BACKEND_DIR}"
-rm -rf frontend_build
-mkdir -p frontend_build
-cp -r "${FRONTEND_DIR}/dist/." frontend_build/
-
-# ── 4. Collect Django static files (incl. React assets) ─────────────────────
+# 2. Collect static files (includes React assets from frontend_build/assets/)
 python manage.py collectstatic --no-input
 
-# ── 5. Run database migrations ───────────────────────────────────────────────
+# 3. Run database migrations
 python manage.py migrate
 
 echo "==> Build complete!"
