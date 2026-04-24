@@ -12,7 +12,6 @@ def spa_view(request):
         return HttpResponse(
             "<h1>Frontend Not Built</h1>"
             "<p>The React frontend has not been built yet. "
-            "The build script (build.sh) should have done this. "
             "Check your Render build logs.</p>"
             f"<p>Expected: <code>{index_path}</code></p>",
             status=503,
@@ -28,6 +27,9 @@ urlpatterns = [
     path('api/', include('budgets.urls')),
     path('api/', include('analytics.urls')),
     path('api/', include('helpdesk.urls')),
-    # Catch-all: serve React SPA for all non-API routes
-    re_path(r'^(?!api/|admin/|static/).*$', spa_view),
+    # Serve React SPA:
+    # path('') handles the root URL "/"
+    # re_path handles ALL other non-api/admin/static paths (login, dashboard, etc.)
+    path('', spa_view),
+    re_path(r'^(?!api/|admin/|static/)(?P<path>.+)$', spa_view),
 ]
