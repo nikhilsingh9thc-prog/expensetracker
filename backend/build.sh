@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-# Render build script.
-# The React frontend build is already committed to git (backend/frontend_build/).
-# This script only needs to install Python deps, collect static, and migrate.
+# Render build script for the Django backend.
+# Set -o errexit so the build fails fast on any error.
 set -o errexit
 
 # Always run from the backend directory (where manage.py lives)
@@ -19,5 +18,16 @@ python manage.py collectstatic --no-input
 
 # 3. Run database migrations
 python manage.py migrate
+
+# 4. Create superuser automatically if DJANGO_SUPERUSER_* env vars are set
+#    This is idempotent — skips creation if the user already exists.
+if [[ -n "${DJANGO_SUPERUSER_USERNAME}" && -n "${DJANGO_SUPERUSER_PASSWORD}" && -n "${DJANGO_SUPERUSER_EMAIL}" ]]; then
+    echo "==> Creating superuser '${DJANGO_SUPERUSER_USERNAME}' (skipped if already exists)..."
+    python manage.py createsuperuser \
+        --no-input \
+        --username "${DJANGO_SUPERUSER_USERNAME}" \
+        --email    "${DJANGO_SUPERUSER_EMAIL}" \
+        || echo "==> Superuser already exists, skipping."
+fi
 
 echo "==> Build complete!"
