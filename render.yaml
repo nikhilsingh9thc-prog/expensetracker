@@ -4,7 +4,7 @@ services:
     runtime: python
     rootDir: backend
     buildCommand: "./build.sh"
-    startCommand: "gunicorn money_mgmt.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120"
+    startCommand: "gunicorn money_mgmt.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120 --preload"
     plan: free
     envVars:
       - key: PYTHON_VERSION
