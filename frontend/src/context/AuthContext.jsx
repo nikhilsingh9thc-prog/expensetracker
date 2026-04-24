@@ -21,12 +21,9 @@ export function AuthProvider({ children }) {
       const res = await API.get('/auth/user/');
       setUser(res.data);
     } catch (err) {
-      // Network errors (502, ECONNREFUSED) or expired tokens — treat as logged-out
-      const status = err?.response?.status;
-      if (!status || status === 401 || status === 502 || status === 503) {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-      }
+      // Any error (401, 500, 502, 503, network) → clear tokens, go to login
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
       setUser(null);
     } finally {
       setLoading(false);

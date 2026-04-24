@@ -1,7 +1,7 @@
 """money_mgmt URL Configuration"""
 from django.contrib import admin
 from django.urls import path, include, re_path
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseNotFound
 from django.conf import settings
 from django.db import connection
 import os
@@ -9,8 +9,8 @@ import os
 
 def health_check(request):
     """
-    Health-check endpoint used by Render and UptimeRobot to keep the
-    service warm. Also verifies the DB connection is alive.
+    Health-check endpoint — used by Render & UptimeRobot to keep server warm.
+    Returns 200 if DB is reachable, 503 otherwise.
     """
     try:
         connection.ensure_connection()
@@ -18,8 +18,13 @@ def health_check(request):
     except Exception:
         db_ok = False
 
-    status = 200 if db_ok else 503
-    return JsonResponse({'status': 'ok' if db_ok else 'db_error', 'db': db_ok}, status=status)
+    code = 200 if db_ok else 503
+    return JsonResponse({'status': 'ok' if db_ok else 'db_error', 'db': db_ok}, status=code)
+
+
+def favicon_view(request):
+    """Return 204 No Content for favicon.ico so browsers don't get a 500."""
+    return HttpResponse(status=204)
 
 
 def spa_view(request):
@@ -34,14 +39,26 @@ def spa_view(request):
             status=503,
             content_type='text/html',
         )
-    with open(index_path, 'rb') as f:
-        return HttpResponse(f.read(), content_type='text/html')
+    try:
+        with open(index_path, 'rb') as f:
+            content = f.read()
+        return HttpResponse(content, content_type='text/html; charset=utf-8')
+    except OSError as e:
+        return HttpResponse(
+            f"<h1>Error reading frontend</h1><p>{e}</p>",
+            status=503,
+            content_type='text/html',
+        )
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Health check — used by Render & UptimeRobot to keep server warm
+    # Health check — keeps server warm
     path('health/', health_check),
+    # Prevent 500 on missing favicon/icon requests
+    path('favicon.ico', favicon_view),
+    path('favicon.svg', favicon_view),
+    path('vite.svg', favicon_view),
     path('api/auth/', include('accounts.urls')),
     path('api/', include('transactions.urls')),
     path('api/', include('budgets.urls')),
