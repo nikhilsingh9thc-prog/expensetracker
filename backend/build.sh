@@ -1,26 +1,41 @@
 #!/usr/bin/env bash
-# Render build script for the Django backend.
-# Set -o errexit so the build fails fast on any error.
+# Render build script — builds React frontend THEN Django backend.
 set -o errexit
 
-# Always run from the backend directory (where manage.py lives)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "${SCRIPT_DIR}"
 
 echo "==> Working directory: $(pwd)"
 echo "==> Python: $(python --version)"
 
-# 1. Install Python dependencies
+# ── 1. Build React frontend ──────────────────────────────────────────────────
+echo "==> Installing Node.js dependencies..."
+cd ../frontend
+npm ci --prefer-offline || npm install
+
+echo "==> Building React (Vite)..."
+npm run build
+
+echo "==> Copying dist → backend/frontend_build..."
+cd ../backend
+rm -rf frontend_build
+cp -r ../frontend/dist frontend_build
+
+echo "==> Frontend build copied successfully."
+
+# ── 2. Python dependencies ───────────────────────────────────────────────────
+echo "==> Installing Python dependencies..."
 pip install -r requirements.txt
 
-# 2. Collect static files (includes React assets from frontend_build/assets/)
+# ── 3. Django static files ───────────────────────────────────────────────────
+echo "==> Collecting static files..."
 python manage.py collectstatic --no-input
 
-# 3. Run database migrations
+# ── 4. Database migrations ───────────────────────────────────────────────────
+echo "==> Running migrations..."
 python manage.py migrate
 
-# 4. Create superuser automatically if DJANGO_SUPERUSER_* env vars are set
-#    This is idempotent — skips creation if the user already exists.
+# ── 5. Optional superuser creation ──────────────────────────────────────────
 if [[ -n "${DJANGO_SUPERUSER_USERNAME}" && -n "${DJANGO_SUPERUSER_PASSWORD}" && -n "${DJANGO_SUPERUSER_EMAIL}" ]]; then
     echo "==> Creating superuser '${DJANGO_SUPERUSER_USERNAME}' (skipped if already exists)..."
     python manage.py createsuperuser \
