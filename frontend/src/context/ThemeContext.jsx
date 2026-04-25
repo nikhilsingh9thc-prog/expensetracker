@@ -6,25 +6,25 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 export const PAGE_THEMES = [
   {
-    id:       'ronin',
-    label:    'RoninFX Red',
-    accent:   '#FF4141',
-    gradient: 'linear-gradient(135deg, #9f0000 0%, #DC2626 50%, #FF4141 100%)',
-    glow:     'rgba(220,38,38,0.38)',
-    shadow:   'rgba(220,38,38,0.45)',
-    border:   'rgba(220,38,38,0.25)',
+    id:       'forest',
+    label:    'Forest Leaf',
+    accent:   '#22C55E',
+    gradient: 'linear-gradient(135deg, #064e1a 0%, #16a34a 50%, #22C55E 100%)',
+    glow:     'rgba(34,197,94,0.38)',
+    shadow:   'rgba(34,197,94,0.45)',
+    border:   'rgba(34,197,94,0.25)',
     /* Splash */
-    splashAccent:    '#FF4141',
-    splashGradient:  'linear-gradient(90deg,#FF4141,#f87171,#FF4141)',
-    splashBlobLeft:  'radial-gradient(circle,#8b1a1a 0%,#3d0000 50%,transparent 70%)',
-    splashBlobRight: 'radial-gradient(circle,#0d0d2e 0%,#000 50%,transparent 70%)',
+    splashAccent:    '#22C55E',
+    splashGradient:  'linear-gradient(90deg,#22C55E,#4ade80,#22C55E)',
+    splashBlobLeft:  'radial-gradient(circle,#052e16 0%,#064e1a 50%,transparent 70%)',
+    splashBlobRight: 'radial-gradient(circle,#0d1f0d 0%,#000 50%,transparent 70%)',
     /* Hero */
-    heroGlow: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(180,10,10,0.42) 0%, transparent 70%), linear-gradient(to bottom,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.10) 40%,rgba(0,0,0,0.72) 100%)',
-    heroTitleColor: '#FF4141',
-    heroCursorColor:'#FF4141',
+    heroGlow: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(22,163,74,0.42) 0%, transparent 70%), linear-gradient(to bottom,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.10) 40%,rgba(0,0,0,0.72) 100%)',
+    heroTitleColor: '#22C55E',
+    heroCursorColor:'#22C55E',
     /* Nav active pill */
-    navActive: 'linear-gradient(135deg,#9f0000,#FF4141)',
-    /* Font */
+    navActive: 'linear-gradient(135deg,#064e1a,#22C55E)',
+    /* Font — Outfit: bold and rounded */
     fontFamily: "'Outfit','Inter',sans-serif",
   },
   {
@@ -45,7 +45,7 @@ export const PAGE_THEMES = [
     heroTitleColor: '#EC4899',
     heroCursorColor:'#EC4899',
     navActive: 'linear-gradient(135deg,#9d174d,#EC4899)',
-    fontFamily: "'Outfit','Inter',sans-serif",
+    fontFamily: "'Inter',sans-serif",
   },
   {
     id:       'winter',
@@ -113,6 +113,7 @@ export function ThemeProvider({ children }) {
       link.href = 'https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&display=swap';
       document.head.appendChild(link);
     }
+
   }, [theme]);
 
   return (

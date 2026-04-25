@@ -153,7 +153,7 @@ export default function OnboardingPage() {
             </div>
             <div style={{ color: 'var(--text-muted)', fontSize: 14, lineHeight: 1.7, marginBottom: 20 }}>
               Every time you refresh, Paise Kaha cycles through
-              <strong style={{ color: 'var(--accent-primary)' }}> RoninFX Red</strong>,
+              <strong style={{ color: '#22C55E' }}> Forest Leaf Green</strong>,
               <strong style={{ color: '#EC4899' }}> Sakura Pink</strong>, and
               <strong style={{ color: '#38BDF8' }}> Winter Arc Blue</strong> themes automatically.
             </div>
@@ -164,7 +164,7 @@ export default function OnboardingPage() {
               display: 'inline-block',
               fontSize: 13, color: 'var(--accent-primary)', fontWeight: 600,
             }}>
-              Current theme: {theme?.label || 'RoninFX Red'}
+              Current theme: {theme?.label || 'Forest Leaf'}
             </div>
           </div>
         )}

@@ -8,8 +8,8 @@ import { useLanguage } from '../context/LanguageContext';
 import { useCurrency } from '../context/CurrencyContext';
 import { useTheme } from '../context/ThemeContext';
 import AIFloatingWidget from '../components/AIFloatingWidget';
-import piggyRed   from '../assets/piggy_hero.png';
-import piggyPink  from '../assets/piggy_pink.png';
+import piggyForest from '../assets/piggy_forest.png';
+import piggyPink   from '../assets/piggy_pink.png';
 import piggyWinter from '../assets/piggy_winter.png';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -124,10 +124,10 @@ export default function DashboardPage() {
     new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
 
   /* Pick hero image + derive theme accent */
-  const accent = theme?.accent || '#FF4141';
+  const accent = theme?.accent || '#22C55E';
   const CHART_COLORS = getChartPalette(accent);
-  const HERO_IMAGES = { ronin: piggyRed, sakura: piggyPink, winter: piggyWinter };
-  const heroImg = HERO_IMAGES[theme?.id] || piggyRed;
+  const HERO_IMAGES = { forest: piggyForest, sakura: piggyPink, winter: piggyWinter };
+  const heroImg = HERO_IMAGES[theme?.id] || piggyForest;
 
   if (loading) return <div className="loading-spinner"><div className="spinner" /></div>;
 
