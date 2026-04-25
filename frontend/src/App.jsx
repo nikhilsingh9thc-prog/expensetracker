@@ -1,10 +1,12 @@
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { CurrencyProvider } from './context/CurrencyContext';
 import { ThemeProvider } from './context/ThemeContext';
 import ProtectedRoute from './components/ProtectedRoute';
-import Sidebar from './components/Sidebar';
+import TopNav from './components/TopNav';
+import SplashScreen from './components/SplashScreen';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import OnboardingPage from './pages/OnboardingPage';
@@ -17,7 +19,6 @@ import HelpCenterPage from './pages/HelpCenterPage';
 import ProfilePage from './pages/ProfilePage';
 import AIAssistantPage from './pages/AIAssistantPage';
 
-/** Check whether this user has already done onboarding */
 function hasOnboarded(user) {
   if (!user) return false;
   return !!localStorage.getItem(`${user.username}_onboarding_done`);
@@ -28,19 +29,16 @@ function AppLayout() {
 
   if (loading) {
     return (
-      <div className="loading-spinner" style={{ minHeight: '100vh' }}>
-        <div className="spinner"></div>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="spinner" />
       </div>
     );
   }
 
   return (
     <Routes>
-      {/* ── Public routes ── */}
       <Route path="/login"    element={user ? <Navigate to="/" replace /> : <LoginPage />} />
       <Route path="/register" element={user ? <Navigate to="/" replace /> : <RegisterPage />} />
-
-      {/* ── Onboarding (protected, shown once) ── */}
       <Route
         path="/onboarding"
         element={
@@ -49,25 +47,23 @@ function AppLayout() {
           </ProtectedRoute>
         }
       />
-
-      {/* ── Main app (protected) ── */}
       <Route
         path="/*"
         element={
           <ProtectedRoute>
-            <div className="app-layout">
-              <Sidebar />
-              <main className="main-content">
+            <div className="app-topnav-layout">
+              <TopNav />
+              <main className="topnav-main-content">
                 <Routes>
-                  <Route path="/" element={<DashboardPage />} />
+                  <Route path="/"            element={<DashboardPage />} />
                   <Route path="/transactions" element={<TransactionsPage />} />
-                  <Route path="/budgets" element={<BudgetsPage />} />
-                  <Route path="/reports" element={<ReportsPage />} />
-                  <Route path="/converter" element={<CurrencyConverterPage />} />
-                  <Route path="/help" element={<HelpCenterPage />} />
-                  <Route path="/profile" element={<ProfilePage />} />
-                  <Route path="/assistant" element={<AIAssistantPage />} />
-                  <Route path="*" element={<Navigate to="/" replace />} />
+                  <Route path="/budgets"      element={<BudgetsPage />} />
+                  <Route path="/reports"      element={<ReportsPage />} />
+                  <Route path="/converter"    element={<CurrencyConverterPage />} />
+                  <Route path="/help"         element={<HelpCenterPage />} />
+                  <Route path="/profile"      element={<ProfilePage />} />
+                  <Route path="/assistant"    element={<AIAssistantPage />} />
+                  <Route path="*"             element={<Navigate to="/" replace />} />
                 </Routes>
               </main>
             </div>
@@ -79,17 +75,22 @@ function AppLayout() {
 }
 
 export default function App() {
+  const [splashDone, setSplashDone] = useState(false);
+
   return (
-    <Router>
-      <ThemeProvider>
-        <LanguageProvider>
-          <CurrencyProvider>
-            <AuthProvider>
-              <AppLayout />
-            </AuthProvider>
-          </CurrencyProvider>
-        </LanguageProvider>
-      </ThemeProvider>
-    </Router>
+    <ThemeProvider>
+      <LanguageProvider>
+        <CurrencyProvider>
+          {!splashDone && <SplashScreen onComplete={() => setSplashDone(true)} />}
+          {splashDone && (
+            <Router>
+              <AuthProvider>
+                <AppLayout />
+              </AuthProvider>
+            </Router>
+          )}
+        </CurrencyProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   );
 }

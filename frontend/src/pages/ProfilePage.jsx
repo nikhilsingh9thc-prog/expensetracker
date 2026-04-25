@@ -3,7 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useCurrency } from '../context/CurrencyContext';
 import { useAuth } from '../context/AuthContext';
 import API from '../api/axios';
-import ThemeColorPicker from '../components/ThemeColorPicker';
+
 
 export default function ProfilePage() {
   const { t, language, setLanguage, LANGUAGES } = useLanguage();
@@ -269,10 +269,7 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {/* Theme colour picker */}
-            <div style={{ marginTop: 20 }}>
-              <ThemeColorPicker />
-            </div>
+
           </div>
 
           {/* Danger Zone */}

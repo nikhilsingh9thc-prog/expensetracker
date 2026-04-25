@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
-import ThemeColorPicker from '../components/ThemeColorPicker';
+
 
 export default function LoginPage() {
   const { t } = useLanguage();
@@ -64,10 +64,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Theme picker shown below login card */}
-      <div style={{ width: '100%', maxWidth: 400, marginTop: 16 }}>
-        <ThemeColorPicker />
-      </div>
+
     </div>
   );
 }

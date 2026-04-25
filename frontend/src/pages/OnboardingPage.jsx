@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useTheme, ACCENTS } from '../context/ThemeContext';
+import { useTheme } from '../context/ThemeContext';
+
 
 const AVATARS = [
   '🦁', '🐻', '🦊', '🐯', '🐸', '🦋',
@@ -35,13 +36,13 @@ function calcAge(dob) {
 export default function OnboardingPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { dark, toggle, accent, setAccent } = useTheme();
+  const { theme } = useTheme();
 
   const [step, setStep]     = useState(1);
   const [avatar, setAvatar] = useState('🦁');
   const [gender, setGender] = useState('');
   const [dob, setDob]       = useState('');
-  const [animDir, setAnimDir] = useState('forward'); // for animation direction
+  const [animDir, setAnimDir] = useState('forward');
 
   const age = calcAge(dob);
 
@@ -57,10 +58,7 @@ export default function OnboardingPage() {
   };
 
   const finish = () => {
-    // Save profile choices to localStorage
-    const profile = { avatar, gender, dob, age, accent, dark };
     localStorage.setItem(storageKey, 'true');
-    localStorage.setItem(`${storageKey}_profile`, JSON.stringify(profile));
     navigate('/');
   };
 
@@ -148,52 +146,25 @@ export default function OnboardingPage() {
 
         {/* ─────────── STEP 1: Theme ─────────── */}
         {step === 1 && (
-          <div>
-            {/* Light / Dark pill */}
-            <div style={{ marginBottom: 20 }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>Mode</div>
-              <div style={{ display: 'flex', gap: 10 }}>
-                {[
-                  { label: '☀️ Light', isDark: false },
-                  { label: '🌙 Dark',  isDark: true  },
-                ].map(m => (
-                  <button key={m.label} onClick={() => m.isDark !== dark && toggle()} style={{
-                    flex: 1, padding: '10px 0', borderRadius: 12, border: 'none',
-                    cursor: 'pointer', fontWeight: 600, fontSize: 14,
-                    background: dark === m.isDark ? 'var(--accent-gradient)' : 'var(--bg-glass)',
-                    color: dark === m.isDark ? '#fff' : 'var(--text-secondary)',
-                    boxShadow: dark === m.isDark ? 'var(--shadow-glow)' : 'none',
-                    transition: 'all 0.25s',
-                  }}>{m.label}</button>
-                ))}
-              </div>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 48, marginBottom: 16 }}>🎨</div>
+            <div style={{ fontWeight: 700, fontSize: 18, color: 'var(--text-primary)', marginBottom: 8 }}>
+              Your theme is set automatically!
             </div>
-
-            {/* Accent colours */}
-            <div>
-              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: 0.5 }}>Accent Colour</div>
-              <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-                {ACCENTS.map(a => (
-                  <button key={a.id} onClick={() => setAccent(a.id)} title={a.label} style={{
-                    width: 46, height: 46, borderRadius: '50%', border: 'none',
-                    background: a.gradient, cursor: 'pointer',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    outline: accent === a.id ? `3px solid var(--text-primary)` : '3px solid transparent',
-                    outlineOffset: 2,
-                    transform: accent === a.id ? 'scale(1.18)' : 'scale(1)',
-                    boxShadow: accent === a.id ? `0 6px 20px ${a.color}55` : `0 2px 8px ${a.color}30`,
-                    transition: 'all 0.22s cubic-bezier(0.34,1.56,0.64,1)',
-                  }}>
-                    {accent === a.id && <span style={{ color: '#fff', fontSize: 20, fontWeight: 700 }}>✓</span>}
-                  </button>
-                ))}
-              </div>
-              <div style={{ marginTop: 12, fontSize: 12, color: 'var(--text-muted)' }}>
-                Active: <strong style={{ color: 'var(--accent-primary)' }}>
-                  {ACCENTS.find(a => a.id === accent)?.label}
-                </strong>
-                {' · '}{dark ? '🌙 Dark' : '☀️ Light'}
-              </div>
+            <div style={{ color: 'var(--text-muted)', fontSize: 14, lineHeight: 1.7, marginBottom: 20 }}>
+              Every time you refresh, Paise Kaha cycles through
+              <strong style={{ color: 'var(--accent-primary)' }}> RoninFX Red</strong>,
+              <strong style={{ color: '#EC4899' }}> Sakura Pink</strong>, and
+              <strong style={{ color: '#38BDF8' }}> Winter Arc Blue</strong> themes automatically.
+            </div>
+            <div style={{
+              padding: '14px 20px', borderRadius: 14,
+              background: 'var(--bg-glass)',
+              border: '1px solid var(--border-focus)',
+              display: 'inline-block',
+              fontSize: 13, color: 'var(--accent-primary)', fontWeight: 600,
+            }}>
+              Current theme: {theme?.label || 'RoninFX Red'}
             </div>
           </div>
         )}

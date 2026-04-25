@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import API from '../api/axios';
-import ThemeColorPicker from '../components/ThemeColorPicker';
+
 
 export default function RegisterPage() {
   const { t } = useLanguage();
@@ -160,10 +160,7 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      {/* Theme picker below the card */}
-      <div style={{ width: '100%', maxWidth: 480, marginTop: 16 }}>
-        <ThemeColorPicker />
-      </div>
+
     </div>
   );
 }
