@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'budgets',
     'analytics',
     'helpdesk',
+    'savings',
 ]
 
 # ─── Middleware (WhiteNoise MUST come right after SecurityMiddleware) ──────────

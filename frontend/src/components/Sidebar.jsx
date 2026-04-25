@@ -14,6 +14,7 @@ export default function Sidebar() {
     { path: '/',             icon: '📊', labelKey: 'dashboard' },
     { path: '/transactions', icon: '💳', labelKey: 'transactions' },
     { path: '/budgets',      icon: '🎯', labelKey: 'budgets' },
+    { path: '/savings',      icon: '💰', labelKey: 'savingsGoals' },
     { path: '/reports',      icon: '📈', labelKey: 'reports' },
     { path: '/converter',    icon: '💱', labelKey: 'converter' },
     { path: '/help',         icon: '❓', labelKey: 'helpCenter' },

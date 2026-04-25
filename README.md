@@ -17,6 +17,7 @@ A full-stack **Personal Finance & Expense Tracker** web application built with *
 - 💸 **Transactions** — Add, view, and filter income & expense transactions
 - 📊 **Analytics** — Visual charts for spending trends and category breakdowns
 - 🎯 **Budgets** — Set monthly budgets and track progress
+- 💰 **Savings Goals** — Smart goal tracking with "Gap Detection" and recovery plans
 - 🌍 **Multi-Language Support** — English, Hindi, Spanish, French
 - 💱 **Multi-Currency Support** — INR, USD, EUR, GBP, JPY with real-time conversion
 - 🎨 **Theme Customization** — Dark/Light mode + custom accent color picker

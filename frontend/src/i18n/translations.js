@@ -3,6 +3,7 @@ const translations = {
     // Nav
     dashboard: 'Dashboard', transactions: 'Transactions', budgets: 'Budgets',
     reports: 'Reports', converter: 'Converter', logout: 'Logout',
+    savingsGoals: 'Savings Goals',
     // Dashboard
     welcomeBack: 'Welcome back,', financialOverview: "Here's your financial overview",
     addTransaction: '+ Add Transaction', currentBalance: 'Current Balance',
@@ -117,6 +118,7 @@ const translations = {
   hi: {
     dashboard: 'डैशबोर्ड', transactions: 'लेनदेन', budgets: 'बजट',
     reports: 'रिपोर्ट', converter: 'मुद्रा परिवर्तक', logout: 'लॉगआउट',
+    savingsGoals: 'बचत लक्ष्य',
     welcomeBack: 'वापसी पर स्वागत,', financialOverview: 'यह आपका वित्तीय अवलोकन है',
     addTransaction: '+ लेनदेन जोड़ें', currentBalance: 'वर्तमान शेष',
     monthlyIncome: 'मासिक आय', monthlyExpense: 'मासिक व्यय',
@@ -199,6 +201,7 @@ const translations = {
   es: {
     dashboard: 'Panel', transactions: 'Transacciones', budgets: 'Presupuestos',
     reports: 'Informes', converter: 'Convertidor', logout: 'Cerrar sesión',
+    savingsGoals: 'Objetivos de Ahorro',
     welcomeBack: 'Bienvenido de nuevo,', financialOverview: 'Tu resumen financiero',
     addTransaction: '+ Añadir Transacción', currentBalance: 'Saldo Actual',
     monthlyIncome: 'Ingresos Mensuales', monthlyExpense: 'Gastos Mensuales',
@@ -281,6 +284,7 @@ const translations = {
   fr: {
     dashboard: 'Tableau de bord', transactions: 'Transactions', budgets: 'Budgets',
     reports: 'Rapports', converter: 'Convertisseur', logout: 'Déconnexion',
+    savingsGoals: "Objectifs d'Épargne",
     welcomeBack: 'Bon retour,', financialOverview: 'Votre aperçu financier',
     addTransaction: '+ Ajouter Transaction', currentBalance: 'Solde Actuel',
     monthlyIncome: 'Revenus Mensuels', monthlyExpense: 'Dépenses Mensuelles',

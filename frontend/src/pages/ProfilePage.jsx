@@ -269,7 +269,17 @@ export default function ProfilePage() {
               </div>
             </div>
 
-
+            <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+              <h4 style={{ marginBottom: '10px', fontSize: '1.1rem', fontWeight: '500' }}>UI Experience</h4>
+              <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16 }}>Prefer a simpler, cleaner interface? Switch to the Classic Version.</p>
+              <button 
+                className="btn btn-secondary" 
+                onClick={() => {
+                  window.dispatchEvent(new CustomEvent('request_experience_change', { detail: { newExp: 'classic' } }));
+                }}>
+                Switch to Classic UI
+              </button>
+            </div>
           </div>
 
           {/* Danger Zone */}

@@ -64,6 +64,7 @@ urlpatterns = [
     path('api/', include('budgets.urls')),
     path('api/', include('analytics.urls')),
     path('api/', include('helpdesk.urls')),
+    path('api/', include('savings.urls')),
     # Serve React SPA for all frontend routes
     path('', spa_view),
     re_path(r'^(?!api/|admin/|static/|health/)(?P<path>.+)$', spa_view),
