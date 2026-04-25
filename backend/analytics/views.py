@@ -12,8 +12,12 @@ from transactions.models import Transaction
 def financial_summary(request):
     """Monthly/yearly summary of income, expenses, and balance."""
     now = timezone.now()
-    month = int(request.query_params.get('month', now.month))
-    year = int(request.query_params.get('year', now.year))
+    try:
+        month = int(request.query_params.get('month', now.month))
+        year = int(request.query_params.get('year', now.year))
+    except (ValueError, TypeError):
+        month = now.month
+        year = now.year
     
     base_qs = Transaction.objects.filter(user=request.user)
 
@@ -58,8 +62,12 @@ def financial_summary(request):
 def category_breakdown(request):
     """Expense breakdown by category for a given month/year."""
     now = timezone.now()
-    month = int(request.query_params.get('month', now.month))
-    year = int(request.query_params.get('year', now.year))
+    try:
+        month = int(request.query_params.get('month', now.month))
+        year = int(request.query_params.get('year', now.year))
+    except (ValueError, TypeError):
+        month = now.month
+        year = now.year
 
     breakdown = (
         Transaction.objects.filter(
@@ -91,7 +99,10 @@ def category_breakdown(request):
 def spending_trends(request):
     """Monthly income and expense trends over the last 12 months."""
     now = timezone.now()
-    months_back = int(request.query_params.get('months', 12))
+    try:
+        months_back = int(request.query_params.get('months', 12))
+    except (ValueError, TypeError):
+        months_back = 12
 
     trends = (
         Transaction.objects.filter(user=request.user)

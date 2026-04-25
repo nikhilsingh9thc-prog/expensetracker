@@ -22,8 +22,10 @@ export default function LoginPage() {
       // Check if this user has completed onboarding
       const onboardingKey = `${username}_onboarding_done`;
       if (localStorage.getItem(onboardingKey)) {
-        navigate('/');
+        // Subsequent login -> go straight to Add Transaction page
+        navigate('/transactions', { state: { openAdd: true } });
       } else {
+        // First time login -> go to onboarding (which leads to dashboard)
         navigate('/onboarding');
       }
     } catch (err) {

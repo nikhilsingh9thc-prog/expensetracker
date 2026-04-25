@@ -1,9 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import API from '../api/axios';
 import { useLanguage } from '../context/LanguageContext';
 import { useCurrency } from '../context/CurrencyContext';
 
 export default function TransactionsPage() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const { t } = useLanguage();
   const { formatCurrency } = useCurrency();
   const [transactions, setTransactions] = useState([]);
@@ -40,8 +43,20 @@ export default function TransactionsPage() {
   useEffect(() => { loadCategories(); }, [loadCategories]);
   useEffect(() => { loadTransactions(); }, [loadTransactions]);
 
-  const openAdd = () => { setEditingTx(null); setForm({ type: 'expense', category: '', amount: '', date: new Date().toISOString().split('T')[0], description: '' }); setShowModal(true); };
+  const openAdd = useCallback(() => { 
+    setEditingTx(null); 
+    setForm({ type: 'expense', category: '', amount: '', date: new Date().toISOString().split('T')[0], description: '' }); 
+    setShowModal(true); 
+  }, []);
+
   const openEdit = (tx) => { setEditingTx(tx); setForm({ type: tx.type, category: tx.category, amount: tx.amount, date: tx.date, description: tx.description || '' }); setShowModal(true); };
+
+  useEffect(() => {
+    if (location.state?.openAdd) {
+      openAdd();
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, navigate, openAdd, location.pathname]);
   const updateFilter = (key, value) => { setFilters((prev) => ({ ...prev, [key]: value })); setCurrentPage(1); };
 
   const handleSubmit = async (e) => {
@@ -147,9 +162,16 @@ export default function TransactionsPage() {
               <div className="modal-body">
                 <div className="form-row">
                   <div className="form-group"><label className="form-label">{t('type')}</label>
-                    <select className="form-select" value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value, category: '' })} required>
-                      <option value="expense">{t('expense')}</option><option value="income">{t('income')}</option>
-                    </select></div>
+                    <div className="sliding-toggle">
+                      <div className={`sliding-toggle-slider ${form.type}`}></div>
+                      <div className={`sliding-toggle-btn ${form.type === 'income' ? 'active' : ''}`} onClick={() => setForm({ ...form, type: 'income', category: '' })}>
+                        {t('income')}
+                      </div>
+                      <div className={`sliding-toggle-btn ${form.type === 'expense' ? 'active' : ''}`} onClick={() => setForm({ ...form, type: 'expense', category: '' })}>
+                        {t('expense')}
+                      </div>
+                    </div>
+                  </div>
                   <div className="form-group"><label className="form-label">{t('category')}</label>
                     <select className="form-select" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} required>
                       <option value="">{t('selectCategory')}</option>

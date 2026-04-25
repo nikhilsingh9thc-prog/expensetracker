@@ -47,7 +47,6 @@ INSTALLED_APPS = [
 
 # ─── Middleware (WhiteNoise MUST come right after SecurityMiddleware) ──────────
 MIDDLEWARE = [
-    'money_mgmt.middleware.DebugMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',

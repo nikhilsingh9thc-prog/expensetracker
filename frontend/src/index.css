@@ -3844,10 +3844,15 @@ body {
   letter-spacing: 1.5px;
 }
 
-[data-page-theme="forest"] .splash-logo,
 [data-page-theme="forest"] .sidebar-logo-text,
 [data-page-theme="forest"] .topnav-logo-name {
   font-family: 'Josefin Slab', serif !important;
+  letter-spacing: 2px;
+}
+
+[data-page-theme="forest"] .splash-logo {
+  font-family: 'Skyscapers', 'Permanent Marker', cursive !important;
+  font-weight: 400 !important;
   letter-spacing: 2px;
 }
 
@@ -4166,4 +4171,15 @@ input[type="number"]:focus {
 .card:hover .stat-icon-clean.balance,
 .card:hover .stat-icon-clean.transactions {
   box-shadow: 0 0 24px var(--accent-glow, rgba(220, 38, 38, 0.25));
+}
+/* ============================================ */
+/*   SLIDING TOGGLE                             */
+/* ============================================ */
+.sliding-toggle { display: flex; position: relative; background: #141414; border: 1px solid rgba(255, 255, 255, 0.10); border-radius: 50px; height: 44px; padding: 4px; user-select: none; } .sliding-toggle-btn { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: #888888; cursor: pointer; z-index: 2; transition: color 0.3s ease; border-radius: 50px; } .sliding-toggle-btn.active { color: #FFFFFF; } .sliding-toggle-slider { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); border-radius: 50px; z-index: 1; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease, box-shadow 0.3s ease; } .sliding-toggle-slider.expense { transform: translateX(100%); background: var(--danger); box-shadow: 0 0 16px rgba(255, 68, 68, 0.3); } .sliding-toggle-slider.income { transform: translateX(0%); background: var(--success); box-shadow: 0 0 16px rgba(34, 197, 94, 0.3); }
+
+/* Fix text color turning green on hover for primary buttons (overrides generic a:hover) */
+.btn-primary:hover,
+.btn.btn-primary:hover,
+.dash-hero-btn-primary:hover {
+  color: #FFFFFF !important;
 }

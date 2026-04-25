@@ -59,6 +59,7 @@ export default function OnboardingPage() {
 
   const finish = () => {
     localStorage.setItem(storageKey, 'true');
+    sessionStorage.setItem('pk_dashboard_visited', 'true');
     navigate('/');
   };
 

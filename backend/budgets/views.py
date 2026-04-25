@@ -31,8 +31,12 @@ class BudgetViewSet(viewsets.ModelViewSet):
 def budget_status(request):
     """Get budget consumption status with alerts for current or specified month."""
     now = timezone.now()
-    month = int(request.query_params.get('month', now.month))
-    year = int(request.query_params.get('year', now.year))
+    try:
+        month = int(request.query_params.get('month', now.month))
+        year = int(request.query_params.get('year', now.year))
+    except (ValueError, TypeError):
+        month = now.month
+        year = now.year
 
     budgets = Budget.objects.filter(
         user=request.user, month=month, year=year

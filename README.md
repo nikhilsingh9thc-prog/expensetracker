@@ -6,8 +6,8 @@ A full-stack **Personal Finance & Expense Tracker** web application built with *
 
 ## 🚀 Live Demo
 
-> Frontend: [http://localhost:5173](http://localhost:5173)  
-> Backend API: [http://localhost:8000/api](http://localhost:8000/api)
+> **Live Demo:** [https://expensetracker-clwy.onrender.com/](https://expensetracker-clwy.onrender.com/)  
+> **Backend API:** [https://expensetracker-clwy.onrender.com/api](https://expensetracker-clwy.onrender.com/api)
 
 ---
 

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import API from '../api/axios';
@@ -95,6 +95,17 @@ export default function DashboardPage() {
 
   /* typewriter on the white subtitle line */
   const subtitleText = useTypewriter(SUBTITLES);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user && !sessionStorage.getItem('pk_dashboard_visited')) {
+      sessionStorage.setItem('pk_dashboard_visited', 'true');
+      const onboardingKey = `${user.username}_onboarding_done`;
+      if (localStorage.getItem(onboardingKey)) {
+        navigate('/transactions', { state: { openAdd: true }, replace: true });
+      }
+    }
+  }, [user, navigate]);
 
   const loadDashboard = useCallback(async () => {
     try {
@@ -192,7 +203,7 @@ export default function DashboardPage() {
           {/* Main title block */}
           <h1 className="dash-hero-title">
             {/* Line 1 — big accent-colored, static */}
-            <span className="dash-hero-title-red" style={{ color: theme?.heroTitleColor || '#FF4141', fontFamily: theme?.fontFamily }}>
+            <span className="dash-hero-title-red" style={{ color: theme?.heroTitleColor || '#FF4141', fontFamily: theme?.titleFontFamily || theme?.fontFamily }}>
               Paise Kaha
             </span>
 
@@ -325,6 +336,9 @@ export default function DashboardPage() {
                 <div className="empty-state-icon">💳</div>
                 <div className="empty-state-title">{t('noTransactions')}</div>
                 <div className="empty-state-text">{t('startTracking')}</div>
+                <Link to="/transactions" state={{ openAdd: true }} className="btn btn-primary" style={{ marginTop: 16 }}>
+                  {t('addTransaction') || 'Add Transaction'}
+                </Link>
               </div>
             )}
           </div>

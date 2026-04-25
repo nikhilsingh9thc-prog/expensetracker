@@ -25,6 +25,7 @@ export const PAGE_THEMES = [
     /* Nav active pill */
     navActive: 'linear-gradient(135deg,#064e1a,#22C55E)',
     /* Font — Outfit: bold and rounded */
+    titleFontFamily: "'Skyscapers', 'Permanent Marker', cursive",
     fontFamily: "'Outfit','Inter',sans-serif",
   },
   {
@@ -106,11 +107,16 @@ export function ThemeProvider({ children }) {
   useEffect(() => {
     applyTheme(theme);
 
-    /* Inject font if Winter Arc */
+    /* Inject font if Winter Arc or Forest Leaf */
     if (theme.id === 'winter') {
       const link = document.createElement('link');
       link.rel  = 'stylesheet';
       link.href = 'https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&display=swap';
+      document.head.appendChild(link);
+    } else if (theme.id === 'forest') {
+      const link = document.createElement('link');
+      link.rel  = 'stylesheet';
+      link.href = 'https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap';
       document.head.appendChild(link);
     }
 

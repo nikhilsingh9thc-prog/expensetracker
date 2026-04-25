@@ -3,8 +3,14 @@ from .models import Budget
 
 
 class BudgetSerializer(serializers.ModelSerializer):
-    category_name = serializers.CharField(source='category.name', read_only=True)
-    category_icon = serializers.CharField(source='category.icon', read_only=True)
+    category_name = serializers.SerializerMethodField()
+    category_icon = serializers.SerializerMethodField()
+
+    def get_category_name(self, obj):
+        return obj.category.name if obj.category else 'Unknown'
+
+    def get_category_icon(self, obj):
+        return obj.category.icon if obj.category else '❓'
 
     class Meta:
         model = Budget
