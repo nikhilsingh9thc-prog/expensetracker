@@ -13,6 +13,7 @@ export const PAGE_THEMES = [
     glow:     'rgba(34,197,94,0.38)',
     shadow:   'rgba(34,197,94,0.45)',
     border:   'rgba(34,197,94,0.25)',
+    logoBg:   'linear-gradient(135deg, #052e16, #064e1a)',
     /* Splash */
     splashAccent:    '#22C55E',
     splashGradient:  'linear-gradient(90deg,#22C55E,#4ade80,#22C55E)',
@@ -36,6 +37,7 @@ export const PAGE_THEMES = [
     glow:     'rgba(236,72,153,0.38)',
     shadow:   'rgba(236,72,153,0.45)',
     border:   'rgba(236,72,153,0.25)',
+    logoBg:   'linear-gradient(135deg, #3d0028, #8b1a5e)',
     /* Splash */
     splashAccent:    '#EC4899',
     splashGradient:  'linear-gradient(90deg,#EC4899,#f472b6,#EC4899)',
@@ -56,6 +58,7 @@ export const PAGE_THEMES = [
     glow:     'rgba(56,189,248,0.38)',
     shadow:   'rgba(56,189,248,0.45)',
     border:   'rgba(56,189,248,0.25)',
+    logoBg:   'linear-gradient(135deg, #0c4a6e, #0284C7)',
     /* Splash */
     splashAccent:    '#38BDF8',
     splashGradient:  'linear-gradient(90deg,#38BDF8,#7dd3fc,#38BDF8)',
@@ -97,6 +100,7 @@ function applyTheme(theme) {
   r.style.setProperty('--hero-title-color',       theme.heroTitleColor);
   r.style.setProperty('--hero-cursor-color',      theme.heroCursorColor);
   r.style.setProperty('--nav-active-bg',          theme.navActive);
+  r.style.setProperty('--logo-bg',                theme.logoBg);
   r.style.setProperty('--font-hero',              theme.fontFamily);
 }
 

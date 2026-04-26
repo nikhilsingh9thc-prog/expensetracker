@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import API from '../../api/axios';
 import ClassicDateRangeSheet from './ClassicDateRangeSheet';
 
-export default function ClassicDashboard() {
+export default function ClassicTransactions() {
   const [transactions, setTransactions] = useState([]);
   const [summary, setSummary] = useState({ total_income: 0, total_expense: 0, total_balance: 0 });
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('All');
   const [deletingIds, setDeletingIds] = useState([]);
   
   // Date Range State
@@ -218,26 +217,37 @@ export default function ClassicDashboard() {
 
   return (
     <div>
-      {/* SUMMARY CARD (TOP) */}
-      <div className="kb-summary-card">
-        <div className="kb-summary-row">
-          <div className="kb-summary-item">
-            <span className="label">Cash In</span>
-            <span className="value val-income">₹{summary.total_income.toLocaleString()}</span>
-          </div>
-          <div className="kb-operator">-</div>
-          <div className="kb-summary-item">
-            <span className="label">Cash Out</span>
-            <span className="value val-expense">₹{summary.total_expense.toLocaleString()}</span>
-          </div>
-          <div className="kb-operator">=</div>
-          <div className="kb-summary-item">
-            <span className="label">Balance</span>
-            <span className="value val-neutral">₹{summary.total_balance.toLocaleString()}</span>
-          </div>
+      {/* Mini Summary for Transactions Page */}
+      <div className="kb-mini-summary" style={{ padding: '0 20px', marginBottom: '15px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: 'var(--kb-text-light)' }}>
+          <span>In: <span className="val-income">₹{summary.total_income.toLocaleString()}</span></span>
+          <span>Out: <span className="val-expense">₹{summary.total_expense.toLocaleString()}</span></span>
+          <span>Bal: <span className="val-neutral">₹{summary.total_balance.toLocaleString()}</span></span>
         </div>
       </div>
 
+      {/* SEARCH & FILTER BAR */}
+      <div className="kb-search-container">
+        <div className="kb-search-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input 
+            type="text" 
+            placeholder="Search note, amount..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          {searchQuery && (
+            <button className="clear-btn" onClick={() => setSearchQuery('')}>✕</button>
+          )}
+        </div>
+        <button 
+          className={`kb-filter-toggle ${showFilterSheet ? 'active' : ''}`} 
+          onClick={() => setShowFilterSheet(true)}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+          Filter
+        </button>
+      </div>
 
       {/* DATE SELECTOR */}
       <div className="kb-date-selector">

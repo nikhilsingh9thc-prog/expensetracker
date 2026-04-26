@@ -163,11 +163,10 @@ export default function TransactionsPage() {
                 <div className="form-row">
                   <div className="form-group"><label className="form-label">{t('type')}</label>
                     <div className="sliding-toggle">
-                      <div className={`sliding-toggle-slider ${form.type}`}></div>
-                      <div className={`sliding-toggle-btn ${form.type === 'income' ? 'active' : ''}`} onClick={() => setForm({ ...form, type: 'income', category: '' })}>
+                      <div className={`sliding-toggle-btn income ${form.type === 'income' ? 'active' : ''}`} onClick={() => setForm({ ...form, type: 'income', category: '' })}>
                         {t('income')}
                       </div>
-                      <div className={`sliding-toggle-btn ${form.type === 'expense' ? 'active' : ''}`} onClick={() => setForm({ ...form, type: 'expense', category: '' })}>
+                      <div className={`sliding-toggle-btn expense ${form.type === 'expense' ? 'active' : ''}`} onClick={() => setForm({ ...form, type: 'expense', category: '' })}>
                         {t('expense')}
                       </div>
                     </div>

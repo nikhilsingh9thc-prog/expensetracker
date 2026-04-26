@@ -5,6 +5,7 @@ import { useCurrency } from '../../context/CurrencyContext';
 import ClassicDashboard from './ClassicDashboard';
 import ClassicAddExpense from './ClassicAddExpense';
 import ClassicReports from './ClassicReports';
+import ClassicTransactions from './ClassicTransactions';
 import ClassicBackup from './ClassicBackup';
 import ClassicCalculator from './ClassicCalculator';
 import ClassicCalendar from './ClassicCalendar';
@@ -32,6 +33,8 @@ export default function ClassicLayout() {
   const [classicTheme, setClassicTheme] = useState(() => localStorage.getItem('kb_classic_accent') || 'blue');
   const [lastSeen, setLastSeen] = useState('Active');
   const [graphModalOpen, setGraphModalOpen] = useState(false);
+  const [quickAddOpen, setQuickAddOpen] = useState(false);
+  const [quickAddType, setQuickAddType] = useState('income');
 
   React.useEffect(() => {
     // Initial load
@@ -112,7 +115,13 @@ export default function ClassicLayout() {
       <div className={`classic-drawer-overlay ${drawerOpen ? 'open' : ''}`} onClick={() => setDrawerOpen(false)}>
         <div className="classic-drawer" onClick={e => e.stopPropagation()}>
           <div className="drawer-header">
-            <h2 className="drawer-title">Paisa Kahan</h2>
+            <div className="drawer-brand">
+              <div className="drawer-logo">💰</div>
+              <div className="drawer-logo-text-group">
+                <h2 className="drawer-title">Paise Kaha</h2>
+                <div className="drawer-subtitle">MONEY MANAGEMENT</div>
+              </div>
+            </div>
             <button className="drawer-close" onClick={() => setDrawerOpen(false)}>✕</button>
           </div>
           
@@ -130,10 +139,6 @@ export default function ClassicLayout() {
             
             <div style={{ marginTop: '30px', padding: '0 5px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                <button className="drawer-footer-link" onClick={() => { setDrawerOpen(false); navigate('/summary'); }} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-                  Summary
-                </button>
                 <button className="drawer-footer-link" onClick={() => { setDrawerOpen(false); navigate('/account-summary'); }} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                   Account Summary
@@ -145,10 +150,6 @@ export default function ClassicLayout() {
                 <button className="drawer-footer-link" onClick={() => { setDrawerOpen(false); navigate('/accounts'); }} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                   Accounts
-                </button>
-                <button className="drawer-footer-link" onClick={() => { setDrawerOpen(false); navigate('/transfer'); }} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
-                  Transfer
                 </button>
                 <button className="drawer-footer-link" onClick={() => { setDrawerOpen(false); navigate('/reports'); }} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
@@ -190,12 +191,6 @@ export default function ClassicLayout() {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1-2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                 Logout
               </button>
-              <button className="kb-icon-btn" onClick={toggleDarkMode} title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"} style={{ color: 'var(--kb-text-light)', border: '1px solid var(--kb-border)', width: '40px', height: '40px' }}>
-                {darkMode ? 
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg> : 
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                }
-              </button>
             </div>
 
             <div className="theme-selector">
@@ -236,17 +231,19 @@ export default function ClassicLayout() {
             )}
           </div>
 
-          <div className="kb-header-title-container">
-            <div className="kb-header-title-text">Paisa Kahan</div>
-            <div className="kb-header-tagline">Track your daily expenses easily and stay in control</div>
-          </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div className="kb-user-badge">
               {userName}
             </div>
-            <button className="kb-icon-btn" onClick={() => navigate('/profile')}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <button className="kb-icon-btn" onClick={toggleDarkMode} title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"} style={{ width: '36px', height: '36px' }}>
+              {darkMode ? 
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg> : 
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+              }
+            </button>
+            <button className="kb-icon-btn" onClick={() => navigate('/profile')} style={{ width: '36px', height: '36px' }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
             </button>
           </div>
         </div>
@@ -260,7 +257,7 @@ export default function ClassicLayout() {
           <Route path="/reports" element={<ClassicReports />} />
           
           <Route path="/summary" element={<Navigate to="/" replace />} />
-          <Route path="/transactions" element={<Navigate to="/" replace />} />
+          <Route path="/transactions" element={<ClassicTransactions />} />
           <Route path="/account-summary" element={<ClassicAccountSummary />} />
           <Route path="/accounts" element={<ClassicAccounts />} />
           <Route path="/transfer" element={<ClassicTransfer />} />
@@ -279,179 +276,125 @@ export default function ClassicLayout() {
       <nav className="classic-nav">
         <button className={`nav-btn ${location.pathname === '/' ? 'active' : ''}`} onClick={() => navigate('/')}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-          <span>Overview</span>
+          <span>Home</span>
         </button>
-        <button className="nav-btn" onClick={() => navigate('/add')}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-          <span>Cash In</span>
+        <button className="nav-btn" onClick={() => { setQuickAddType('income'); setQuickAddOpen(true); }}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+          <span style={{ color: '#10b981' }}>Income</span>
         </button>
         <div className="nav-add-btn" onClick={() => navigate('/add')}>
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         </div>
-        <button className="nav-btn" onClick={() => navigate('/add')}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="7" x2="17" y2="17"></line><polyline points="17 7 17 17 7 17"></polyline></svg>
-          <span>Cash Out</span>
+        <button className="nav-btn" onClick={() => { setQuickAddType('expense'); setQuickAddOpen(true); }}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="7" x2="17" y2="17"></line><polyline points="17 7 17 17 7 17"></polyline></svg>
+          <span style={{ color: '#ef4444' }}>Expense</span>
         </button>
-        <button className={`nav-btn ${graphModalOpen ? 'active' : ''}`} onClick={() => setGraphModalOpen(true)}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20V14"></path></svg>
-          <span>Graphs</span>
+        <button className={`nav-btn ${location.pathname === '/reports' ? 'active' : ''}`} onClick={() => navigate('/reports')}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          <span>Reports</span>
         </button>
       </nav>
 
+      {/* QUICK ADD MODAL */}
+      {quickAddOpen && (
+        <QuickAddModal 
+          type={quickAddType} 
+          onClose={() => setQuickAddOpen(false)} 
+          onSuccess={() => {
+            setQuickAddOpen(false);
+            window.dispatchEvent(new Event('refresh_dashboard'));
+          }}
+        />
+      )}
 
 
-      {/* GRAPH MODAL */}
-      {graphModalOpen && <GraphModal onClose={() => setGraphModalOpen(false)} />}
+
     </div>
   );
 }
 
-function GraphModal({ onClose }) {
-  const [data, setData] = useState({ income: 0, expense: 0, categories: {}, daily: {} });
-  const [loading, setLoading] = useState(true);
+function QuickAddModal({ type, onClose, onSuccess }) {
+  const [amount, setAmount] = useState('');
+  const [description, setDescription] = useState('');
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log("[DEBUG] Fetching graph data from /transactions/");
-        const res = await api.get('/transactions/', { params: { page_size: 100 } });
-        const transactions = res.data.results || (Array.isArray(res.data) ? res.data : []);
-        console.log("[DEBUG] Processed transactions for graph:", transactions);
-        
-        let inc = 0, exp = 0;
-        const cats = {};
-        const daily = {};
+  const handleAdd = async () => {
+    if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
+      alert("Please enter a valid amount");
+      return;
+    }
 
-        // Sort by date to get trend
-        const sorted = [...transactions].sort((a, b) => new Date(a.date) - new Date(b.date));
+    try {
+      setLoading(true);
+      
+      // Fetch categories to pick a default one
+      const catRes = await api.get('/transactions/categories/');
+      const categories = catRes.data.results || catRes.data;
+      const defaultCat = categories.find(c => c.name.toLowerCase().includes(type === 'income' ? 'income' : 'other')) || categories[0];
 
-        sorted.forEach(t => {
-          const amt = parseFloat(t.amount);
-          if (t.type === 'income') inc += amt;
-          else exp += amt;
+      await api.post('/transactions/', {
+        amount: parseFloat(amount),
+        description: description || (type === 'income' ? 'Quick Income' : 'Quick Expense'),
+        type: type,
+        category: defaultCat?.id,
+        date: date
+      });
 
-          if (t.type === 'expense') {
-            cats[t.category_name] = (cats[t.category_name] || 0) + amt;
-          }
-
-          const date = new Date(t.date).toLocaleDateString();
-          daily[date] = (daily[date] || 0) + (t.type === 'income' ? amt : -amt);
-        });
-
-        setData({ income: inc, expense: exp, categories: cats, daily });
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const barData = {
-    labels: ['Total Cash In', 'Total Cash Out'],
-    datasets: [{
-      label: 'Amount',
-      data: [data.income, data.expense],
-      backgroundColor: ['#22c55e', '#ef4444'],
-      borderRadius: 12,
-    }]
-  };
-
-  const pieData = {
-    labels: Object.keys(data.categories),
-    datasets: [{
-      data: Object.values(data.categories),
-      backgroundColor: ['#3b82f6', '#8b5cf6', '#f59e0b', '#ec4899', '#10b981', '#6366f1'],
-    }]
-  };
-
-  const lineData = {
-    labels: Object.keys(data.daily).slice(-7),
-    datasets: [{
-      label: 'Daily Balance Trend',
-      data: Object.values(data.daily).slice(-7),
-      borderColor: '#3b82f6',
-      backgroundColor: 'rgba(59, 130, 246, 0.1)',
-      fill: true,
-      tension: 0.4,
-    }]
+      onSuccess();
+    } catch (err) {
+      console.error(err);
+      alert("Failed to add transaction");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="kb-modal-overlay" onClick={onClose}>
-      <div className="kb-modal-content slide-up" onClick={e => e.stopPropagation()} style={{ maxWidth: '95%', width: '1100px' }}>
-        <div className="kb-modal-header">
-          <div>
-            <h3 style={{ fontSize: '1.8rem' }}>Your Money Summary</h3>
-            <p style={{ color: '#64748b', marginTop: '4px' }}>Simple view of your spending and savings</p>
-          </div>
-          <button className="kb-modal-close" onClick={onClose} style={{ width: '45px', height: '45px', fontSize: '1.2rem' }}>✕</button>
+    <div className="kb-quick-add-overlay" onClick={onClose}>
+      <div className="kb-quick-add-content" onClick={e => e.stopPropagation()}>
+        <div className="quick-add-header">
+          <h3 className={`quick-add-title ${type}`}>Quick {type === 'income' ? 'Income' : 'Expense'}</h3>
+          <button className="drawer-close" onClick={onClose}>✕</button>
         </div>
 
-        {loading ? (
-          <div style={{ padding: '50px', textAlign: 'center' }}>Loading your summary...</div>
-        ) : (
-          <div className="kb-graph-horizontal-row">
-            {/* 1. Bar Chart: In vs Out */}
-            <div className="kb-graph-compact-card">
-              <h4 className="compact-title">In vs Out</h4>
-              <div className="kb-chart-wrapper-compact">
-                <Bar data={barData} options={{ 
-                  responsive: true, 
-                  maintainAspectRatio: false,
-                  plugins: { legend: { display: false }, tooltip: { enabled: true } },
-                  scales: { 
-                    y: { display: false },
-                    x: { ticks: { font: { size: 10 } } }
-                  }
-                }} />
-              </div>
-            </div>
+        <div className="quick-input-group">
+          <label>Amount (₹)</label>
+          <input 
+            type="number" 
+            className="quick-amount-input" 
+            placeholder="0.00" 
+            autoFocus
+            value={amount}
+            onChange={e => setAmount(e.target.value)}
+          />
+        </div>
 
-            {/* 2. Pie Chart: Categories */}
-            <div className="kb-graph-compact-card">
-              <h4 className="compact-title">Categories</h4>
-              <div className="kb-chart-wrapper-compact">
-                <Pie data={pieData} options={{ 
-                  responsive: true, 
-                  maintainAspectRatio: false,
-                  plugins: { legend: { display: false } }
-                }} />
-              </div>
-            </div>
+        <div className="quick-input-group">
+          <label>Note / Description</label>
+          <input 
+            type="text" 
+            className="quick-field-input" 
+            placeholder="What was this for?" 
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+          />
+        </div>
 
-            {/* 3. Line Chart: Trend */}
-            <div className="kb-graph-compact-card">
-              <h4 className="compact-title">Trend</h4>
-              <div className="kb-chart-wrapper-compact">
-                <Line data={lineData} options={{ 
-                  responsive: true, 
-                  maintainAspectRatio: false,
-                  plugins: { legend: { display: false } },
-                  scales: { 
-                    y: { display: false },
-                    x: { display: false }
-                  }
-                }} />
-              </div>
-            </div>
+        <div className="quick-input-group">
+          <label>Date</label>
+          <input 
+            type="date" 
+            className="quick-field-input" 
+            value={date}
+            onChange={e => setDate(e.target.value)}
+          />
+        </div>
 
-            {/* 4. Balance Card */}
-            <div className="kb-graph-compact-card balance-compact">
-              <h4 className="compact-title">Balance</h4>
-              <div className="kb-balance-display-compact">
-                <div className="kb-balance-amount-compact" style={{ color: (data.income - data.expense) >= 0 ? '#10b981' : '#ef4444' }}>
-                  ₹{(data.income - data.expense).toLocaleString()}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-        
-        <div style={{ textAlign: 'center', marginTop: '30px' }}>
-          <button className="classic-btn classic-btn-primary" onClick={onClose} style={{ maxWidth: '200px' }}>
-            Got it, Close
+        <div className="quick-actions">
+          <button className="quick-btn quick-btn-cancel" onClick={onClose}>Cancel</button>
+          <button className="quick-btn quick-btn-add" onClick={handleAdd} disabled={loading}>
+            {loading ? 'Adding...' : 'Add Transaction'}
           </button>
         </div>
       </div>
