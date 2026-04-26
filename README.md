@@ -6,8 +6,8 @@ A full-stack **Personal Finance & Expense Tracker** web application built with *
 
 ## 🚀 Live Demo
 
-> **Live Demo:** [https://expensetracker-clwy.onrender.com/](https://expensetracker-clwy.onrender.com/)  
-> **Backend API:** [https://expensetracker-clwy.onrender.com/api](https://expensetracker-clwy.onrender.com/api)
+> **Live Demo:** [https://paise-kaha.onrender.com/](https://paise-kaha.onrender.com/)  
+> **Backend API:** [https://paise-kaha.onrender.com/api](https://paise-kaha.onrender.com/api)
 
 ---
 
