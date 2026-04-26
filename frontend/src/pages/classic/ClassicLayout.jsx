@@ -316,35 +316,62 @@ export default function ClassicLayout() {
 function QuickAddModal({ type, onClose, onSuccess }) {
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [date, setDate] = useState(() => {
+    const d = new Date();
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().split('T')[0];
+  });
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleAdd = async () => {
+    // Validation
     if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
-      alert("Please enter a valid amount");
+      alert("Please enter a valid amount greater than 0");
+      return;
+    }
+    if (!date) {
+      alert("Please select a date");
       return;
     }
 
+    const payload = {
+      amount: parseFloat(amount),
+      description: description || (type === 'income' ? 'Quick Income' : 'Quick Expense'),
+      note: description, // Sending both for compatibility
+      type: type,
+      date: date
+    };
+
+    console.log("[DEBUG] Adding transaction with payload:", payload);
+
     try {
       setLoading(true);
+      setSuccess(false);
       
-      // Fetch categories to pick a default one
-      const catRes = await api.get('/transactions/categories/');
+      // Fetch categories to pick a default one (Corrected URL from /transactions/categories/ to /categories/)
+      const catRes = await api.get('/categories/');
       const categories = catRes.data.results || catRes.data;
       const defaultCat = categories.find(c => c.name.toLowerCase().includes(type === 'income' ? 'income' : 'other')) || categories[0];
 
-      await api.post('/transactions/', {
-        amount: parseFloat(amount),
-        description: description || (type === 'income' ? 'Quick Income' : 'Quick Expense'),
-        type: type,
-        category: defaultCat?.id,
-        date: date
-      });
+      if (defaultCat) {
+        payload.category = defaultCat.id;
+      }
 
-      onSuccess();
+      const response = await api.post('/transactions/', payload);
+      console.log("[DEBUG] Transaction added successfully:", response.data);
+      
+      setSuccess(true);
+      
+      // Show "Added" for 1 second then close/refresh
+      setTimeout(() => {
+        onSuccess();
+      }, 1000);
+
     } catch (err) {
-      console.error(err);
-      alert("Failed to add transaction");
+      console.error("[DEBUG] Failed to add transaction:", err);
+      const serverMsg = err.response?.data ? JSON.stringify(err.response.data) : err.message;
+      alert(`Failed to add transaction: ${serverMsg}`);
     } finally {
       setLoading(false);
     }
@@ -393,8 +420,8 @@ function QuickAddModal({ type, onClose, onSuccess }) {
 
         <div className="quick-actions">
           <button className="quick-btn quick-btn-cancel" onClick={onClose}>Cancel</button>
-          <button className="quick-btn quick-btn-add" onClick={handleAdd} disabled={loading}>
-            {loading ? 'Adding...' : 'Add Transaction'}
+          <button className="quick-btn quick-btn-add" onClick={handleAdd} disabled={loading || success}>
+            {success ? 'Added!' : loading ? 'Adding...' : 'Add Transaction'}
           </button>
         </div>
       </div>

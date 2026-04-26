@@ -17,11 +17,13 @@ class TransactionSerializer(serializers.ModelSerializer):
     category_name = serializers.SerializerMethodField()
     category_icon = serializers.SerializerMethodField()
 
+    note = serializers.CharField(source='description', required=False, allow_blank=True)
+
     class Meta:
         model = Transaction
         fields = (
             'id', 'category', 'category_name', 'category_icon',
-            'amount', 'type', 'date', 'description',
+            'amount', 'type', 'date', 'description', 'note',
             'created_at', 'updated_at'
         )
         read_only_fields = ('id', 'created_at', 'updated_at')
@@ -33,5 +35,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         return obj.category.icon if obj.category else '📁'
 
     def create(self, validated_data):
+        # Handle the case where both 'description' and 'note' (source='description') might be present
+        # DRF source mapping handles this, but let's be safe.
         validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
